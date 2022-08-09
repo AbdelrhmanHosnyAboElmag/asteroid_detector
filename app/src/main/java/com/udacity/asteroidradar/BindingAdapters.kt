@@ -11,8 +11,10 @@ import java.util.*
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription="take care is dangers asteroid"
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription="is normal asteroid"
     }
 }
 
@@ -20,8 +22,10 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
+        imageView.contentDescription="take care is asteroid_hazardous"
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+        imageView.contentDescription="is asteroid_safe"
     }
 }
 
