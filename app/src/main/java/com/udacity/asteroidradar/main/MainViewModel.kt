@@ -1,31 +1,38 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
+
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.api.checkForInternet
+import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepsitory
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToDetailFragment = MutableLiveData<Asteroid>()
     val navigateToDetailFragment
         get() = _navigateToDetailFragment
     private val database = getDatabase(application)
-    val asteroids = database.asteroidDao.getAsteroid()
-    private val videosRepository = AsteroidRepsitory(database)
+    private val AsteroidRepository = AsteroidRepsitory(database)
+    private val _picture = MutableLiveData<PictureOfDay>()
+    val picture
+        get() = _picture
+    val asteroidsList = AsteroidRepository.getAsteroidsDatabase
+    val asteroidsListToday = AsteroidRepository.getAsteroidsTodayDatabase
+
 
     init {
         viewModelScope.launch {
-            videosRepository.refreshVideos()
+           if( checkForInternet(application.applicationContext)) {
+               AsteroidRepository.refreshAsteroids(getToday())
+               _picture.value = AsteroidRepository.refreshPicture()
+           }
         }
     }
 
-    val asteroidsList = videosRepository.getAsteroidsDatabase
 
     fun onDetailFragmentClick(asteroid: Asteroid) {
         _navigateToDetailFragment.value = asteroid

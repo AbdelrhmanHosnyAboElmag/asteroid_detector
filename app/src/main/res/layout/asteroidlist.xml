@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/default_text_color"
         android:textSize="14sp"
-        app:todaydate="@{asteroids.potentiallyHazardous}"
+        app:todaydate="@{asteroids.closeApproachDate}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"

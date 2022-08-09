@@ -3,6 +3,7 @@ package com.udacity.asteroidradar
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,24 +28,38 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
 @BindingAdapter("astronomicalUnitText")
 fun bindTextViewToAstronomicalUnit(textView: TextView, number: Double) {
     val context = textView.context
+    textView.contentDescription=String.format(context.getString(R.string.astronomical_unit_format), number)
     textView.text = String.format(context.getString(R.string.astronomical_unit_format), number)
 }
 
 @BindingAdapter("kmUnitText")
 fun bindTextViewToKmUnit(textView: TextView, number: Double) {
     val context = textView.context
+    textView.contentDescription=String.format(context.getString(R.string.km_unit_format), number)
     textView.text = String.format(context.getString(R.string.km_unit_format), number)
 }
 
 @BindingAdapter("velocityText")
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
+    textView.contentDescription= String.format(context.getString(R.string.km_s_unit_format), number)
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 @BindingAdapter("todaydate")
-fun todayDate(textView: TextView, isHazardous: Boolean) {
-    val c: Date = Calendar.getInstance().time
-    val df = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-    val formattedDate: String = df.format(c)
-    textView.text = formattedDate
+fun todayDate(textView: TextView, closeApproachDate: String) {
+    textView.text = closeApproachDate
+}
+
+@BindingAdapter("urlImage")
+fun bindUrlImage(view: ImageView, imageUrl: PictureOfDay?) {
+    if (imageUrl != null) {
+        Picasso.get()
+            .load(imageUrl.url)
+            .fit()
+            .centerCrop()
+            .into(view)
+        view.contentDescription=imageUrl.title
+    } else {
+        view.setImageBitmap(null)
+    }
 }
